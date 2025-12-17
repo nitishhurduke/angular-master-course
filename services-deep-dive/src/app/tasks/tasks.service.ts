@@ -1,13 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { Task, TaskData } from './task.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
-  taskList: Task[] = [];
+  // taskList: Task[] = [];
+  taskList = signal<Task[]>([]);
   addNewTask(taskData: TaskData) {
-    this.taskList.unshift({
+    this.taskList().unshift({
       id: this.generateID(),
       title: taskData.title,
       description: taskData.description,

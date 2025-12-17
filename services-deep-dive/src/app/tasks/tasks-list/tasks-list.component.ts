@@ -13,13 +13,16 @@ import { TasksService } from '../tasks.service';
 export class TasksListComponent {
   selectedFilter = signal<string>('ALL');
   private taskService = inject(TasksService);
-  tasks = this.taskService.taskList;
+  tasks = this.taskService.taskList();
 
   onChangeTasksFilter(filter: string) {
     this.selectedFilter.set(filter);
-    this.tasks = this.taskService.taskList.filter(
-      (task) =>
-        this.selectedFilter() === 'ALL' || this.selectedFilter() === task.status
-    );
+    this.tasks = this.taskService
+      .taskList()
+      .filter(
+        (task) =>
+          this.selectedFilter() === 'ALL' ||
+          this.selectedFilter() === task.status
+      );
   }
 }
