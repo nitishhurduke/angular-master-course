@@ -1,19 +1,29 @@
 import { Injectable, signal } from '@angular/core';
-import { Task, TaskData } from './task.model';
+import { Task, TaskData, TaskStatus } from './task.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
-  // taskList: Task[] = [];
-  taskList = signal<Task[]>([]);
+  private taskList = signal<Task[]>([]);
+  allTasks = this.taskList.asReadonly();
+
   addNewTask(taskData: TaskData) {
-    this.taskList().unshift({
+    const newTask: Task = {
       id: this.generateID(),
       title: taskData.title,
       description: taskData.description,
       status: 'OPEN',
-    });
+    };
+    this.taskList.update((oldTasks) => [...oldTasks, newTask]);
+  }
+
+  updateTaskStatus(taskId: string, udpdatedStatus: TaskStatus) {
+    this.taskList.update((oldTasks) =>
+      oldTasks.map((task) =>
+        task.id === taskId ? { ...task, status: udpdatedStatus } : task
+      )
+    );
   }
 
   /**
