@@ -2,18 +2,22 @@
   <h2>My Tasks</h2>
   <p>
     <select (change)="onChangeTasksFilter(filter.value)" #filter>
-      <option value="all">All</option>
-      <option value="open">Open</option>
-      <option value="in-progress">In-Progress</option>
-      <option value="done">Completed</option>
+      <option value="ALL">All</option>
+      <option value="OPEN">Open</option>
+      <option value="IN_PROGRESS">In-Progress</option>
+      <option value="DONE">Completed</option>
     </select>
   </p>
 </header>
 
 <ul>
   @for (task of tasks; track task.id) {
-    <li>
-      <app-task-item [task]="task" />
-    </li>
+  <li>
+    <app-task-item [task]="task" />
+  </li>
+  } @empty {
+  <li>
+    <p>No items to show</p>
+  </li>
   }
 </ul>

@@ -17,5 +17,9 @@ export class TasksListComponent {
 
   onChangeTasksFilter(filter: string) {
     this.selectedFilter.set(filter);
+    this.tasks = this.taskService.taskList.filter(
+      (task) =>
+        this.selectedFilter() === 'ALL' || this.selectedFilter() === task.status
+    );
   }
 }
