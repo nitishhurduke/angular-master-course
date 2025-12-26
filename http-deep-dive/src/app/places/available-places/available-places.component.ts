@@ -1,10 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs';
 
 import { Place } from '../place.model';
 import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
-import { HttpClient } from '@angular/common/http';
-
 @Component({
   selector: 'app-available-places',
   standalone: true,
@@ -19,14 +19,9 @@ export class AvailablePlacesComponent implements OnInit {
   ngOnInit(): void {
     this.httpClient
       .get<{ places: Place[] }>(this.backendUrl + '/places')
-      // .get<{ places: Place[] }>(this.backendUrl + '/places', {
-      //   observe: 'response', //other oprion is 'event'
-      // })
+      .pipe(map((resData) => resData.places))
       .subscribe({
-        // next: (response) => {
-        //   console.log(response);
-        // },
-        next: (resData) => console.log(resData.places),
+        next: (places) => this.places.set(places),
       });
   }
 }
