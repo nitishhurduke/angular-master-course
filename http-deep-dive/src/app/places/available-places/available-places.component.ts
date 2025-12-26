@@ -13,15 +13,18 @@ import { PlacesContainerComponent } from '../places-container/places-container.c
   imports: [PlacesComponent, PlacesContainerComponent],
 })
 export class AvailablePlacesComponent implements OnInit {
+  isFetching = signal(false);
   places = signal<Place[] | undefined>(undefined);
   httpClient = inject(HttpClient);
   private backendUrl = 'http://localhost:3000';
   ngOnInit(): void {
+    this.isFetching.set(true);
     this.httpClient
       .get<{ places: Place[] }>(this.backendUrl + '/places')
       .pipe(map((resData) => resData.places))
       .subscribe({
         next: (places) => this.places.set(places),
+        complete: () => this.isFetching.set(false),
       });
   }
 }
