@@ -18,7 +18,7 @@ export class UserPlacesComponent implements OnInit {
   private placesService = inject(PlacesService);
   private destroyRef = inject(DestroyRef);
 
-  userPlaces = signal<Place[]>([]);
+  userPlaces = this.placesService.loadedUserPlaces;
   isFetching = signal(false);
   error = signal('');
 
@@ -27,9 +27,6 @@ export class UserPlacesComponent implements OnInit {
     const userPlacesSubscription = this.placesService
       .loadUserPlaces()
       .subscribe({
-        next: (places) => {
-          this.userPlaces.set(places);
-        },
         complete: () => {
           this.isFetching.set(false);
         },
