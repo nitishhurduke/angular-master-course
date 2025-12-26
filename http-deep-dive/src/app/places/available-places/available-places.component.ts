@@ -43,4 +43,15 @@ export class AvailablePlacesComponent implements OnInit {
         },
       });
   }
+  onSelectPlace(place: Place) {
+    console.log('Place selected with ID: ', place.id);
+    this.httpClient
+      .put(this.backendUrl + '/user-places', {
+        placeId: place.id,
+      })
+      .subscribe({
+        next: (allUserPlaces) =>
+          console.log('PUT | Response : ', allUserPlaces),
+      });
+  }
 }

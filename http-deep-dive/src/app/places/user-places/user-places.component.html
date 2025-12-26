@@ -1,3 +1,5 @@
 <app-places-container title="Your Favorite Places">
-  <p>Todo...</p>
+  @if (userPlaces()) {
+  <app-places [places]="userPlaces()!" />
+  }
 </app-places-container>
