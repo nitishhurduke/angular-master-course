@@ -37,4 +37,8 @@ export class UserPlacesComponent implements OnInit {
 
     this.destroyRef.onDestroy(() => userPlacesSubscription.unsubscribe());
   }
+
+  removeUserPlace(place: Place) {
+    this.placesService.removeUserPlace(place);
+  }
 }

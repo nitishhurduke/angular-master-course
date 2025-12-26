@@ -1,5 +1,8 @@
 <app-places-container title="Your Favorite Places">
   @if (userPlaces()) {
-  <app-places [places]="userPlaces()!" />
+  <app-places
+    [places]="userPlaces()!"
+    (selectPlace)="removeUserPlace($event)"
+  />
   }
 </app-places-container>

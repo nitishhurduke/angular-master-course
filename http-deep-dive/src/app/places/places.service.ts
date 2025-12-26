@@ -51,7 +51,18 @@ export class PlacesService {
       );
   }
 
-  removeUserPlace(place: Place) {}
+  removeUserPlace(place: Place) {
+    this.httpClient
+      .delete(this.backendURL + '/user-places/' + place.id)
+      .subscribe({
+        complete: () => {
+          this.userPlaces.update((prevPlace) =>
+            prevPlace.filter((userPlace) => place.id !== userPlace.id)
+          );
+          console.log(`Place with id : ${place.id} removed from favorites`);
+        },
+      });
+  }
 
   private fetchPlaces(endpoint: string, errorMessage: string) {
     return this.httpClient
