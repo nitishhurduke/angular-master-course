@@ -1,10 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
 
 import { Place } from '../place.model';
 import { PlacesComponent } from '../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
+import { PlacesService } from '../places.service';
 @Component({
   selector: 'app-available-places',
   standalone: true,
@@ -16,21 +17,14 @@ export class AvailablePlacesComponent implements OnInit {
   isFetching = signal(false);
   error = signal('');
   places = signal<Place[] | undefined>(undefined);
-  httpClient = inject(HttpClient);
-  private backendUrl = 'http://localhost:3000';
+
+  private placesService = inject(PlacesService);
+  private destroyRef = inject(DestroyRef);
+
   ngOnInit(): void {
     this.isFetching.set(true);
-    this.httpClient
-      .get<{ places: Place[] }>(this.backendUrl + '/places')
-      .pipe(
-        map((resData) => resData.places),
-        catchError((error) => {
-          console.log(error);
-          return throwError(
-            () => new Error('Something went wrong, Please try again later.')
-          );
-        })
-      )
+    const availablePlacesSubscription = this.placesService
+      .loadAvailablePlaces()
       .subscribe({
         next: (places) => {
           this.places.set(places);
@@ -42,16 +36,18 @@ export class AvailablePlacesComponent implements OnInit {
           this.error.set(error.message);
         },
       });
+    this.destroyRef.onDestroy(() => availablePlacesSubscription.unsubscribe());
   }
+
   onSelectPlace(place: Place) {
-    console.log('Place selected with ID: ', place.id);
-    this.httpClient
-      .put(this.backendUrl + '/user-places', {
-        placeId: place.id,
-      })
+    const userPlacesSubscription = this.placesService
+      .addPlaceToUserPlaces(place.id)
       .subscribe({
-        next: (allUserPlaces) =>
-          console.log('PUT | Response : ', allUserPlaces),
+        next: (allUserPlaces) => {
+          console.log('PUT | Response : ', allUserPlaces);
+        },
       });
+
+    this.destroyRef.onDestroy(() => userPlacesSubscription.unsubscribe());
   }
 }
