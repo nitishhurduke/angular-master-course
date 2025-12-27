@@ -32,7 +32,9 @@ export class AvailablePlacesComponent implements OnInit {
         complete: () => {
           this.isFetching.set(false);
         },
-        error: (error: Error) => {},
+        error: (error: Error) => {
+          this.error.set(error.message);
+        },
       });
     this.destroyRef.onDestroy(() => availablePlacesSubscription.unsubscribe());
   }

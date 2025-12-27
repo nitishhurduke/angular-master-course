@@ -70,7 +70,7 @@ export class PlacesService {
       .pipe(
         map((resData) => resData.places),
         catchError((error) => {
-          console.log(error);
+          this.errorService.showError(errorMessage);
           return throwError(() => new Error(errorMessage));
         })
       );
