@@ -19,12 +19,14 @@ export class SignupComponent {
       validators: [Validators.email, Validators.required],
     }),
 
-    password: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(5)],
-    }),
+    passwords: new FormGroup({
+      password: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(5)],
+      }),
 
-    confirmPassword: new FormControl('', {
-      validators: [Validators.required, Validators.minLength(5)],
+      confirmPassword: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(5)],
+      }),
     }),
 
     firstName: new FormControl('', {
@@ -35,20 +37,22 @@ export class SignupComponent {
       validators: [Validators.required],
     }),
 
-    street: new FormControl('', {
-      validators: [Validators.required],
-    }),
+    address: new FormGroup({
+      street: new FormControl('', {
+        validators: [Validators.required],
+      }),
 
-    number: new FormControl('', {
-      validators: [Validators.required],
-    }),
+      number: new FormControl('', {
+        validators: [Validators.required],
+      }),
 
-    postalCode: new FormControl('', {
-      validators: [Validators.required],
-    }),
+      postalCode: new FormControl('', {
+        validators: [Validators.required],
+      }),
 
-    city: new FormControl('', {
-      validators: [Validators.required],
+      city: new FormControl('', {
+        validators: [Validators.required],
+      }),
     }),
 
     role: new FormControl<
@@ -62,6 +66,7 @@ export class SignupComponent {
 
   onSubmit() {
     console.log(this.form);
+    this.form.controls.passwords;
   }
 
   onReset() {
