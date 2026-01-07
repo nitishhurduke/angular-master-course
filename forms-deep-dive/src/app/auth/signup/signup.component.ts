@@ -1,11 +1,33 @@
 import { Component } from '@angular/core';
 import {
+  AbstractControl,
   FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+
+// function matchPasswords(control: AbstractControl) {
+//   const password = control.get('password')?.value;
+//   const confirmPassword = control.get('confirmPassword')?.value;
+
+//   if (password === confirmPassword) return null;
+
+//   return { confirmPasswordDoesntMatchPassword: true };
+// }
+
+function equalValues(controlName1: string, controlName2: string) {
+  return (control: AbstractControl) => {
+    const val1 = control.get(controlName1)?.value;
+    const val2 = control.get(controlName2)?.value;
+
+    if (val1 === val2) return null;
+    return {
+      valuesNotEqual: true,
+    };
+  };
+}
 
 @Component({
   selector: 'app-signup',
@@ -20,15 +42,22 @@ export class SignupComponent {
       validators: [Validators.email, Validators.required],
     }),
 
-    passwords: new FormGroup({
-      password: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(5)],
-      }),
+    passwords: new FormGroup(
+      {
+        password: new FormControl('', {
+          validators: [Validators.required, Validators.minLength(5)],
+        }),
 
-      confirmPassword: new FormControl('', {
-        validators: [Validators.required, Validators.minLength(5)],
-      }),
-    }),
+        confirmPassword: new FormControl('', {
+          validators: [
+            Validators.required,
+            Validators.minLength(5),
+            // matchPasswords,
+          ],
+        }),
+      },
+      { validators: [equalValues('password', 'confirmPassword')] }
+    ),
 
     firstName: new FormControl('', {
       validators: [Validators.required],
