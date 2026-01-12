@@ -19,6 +19,7 @@ import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 })
 export class UserTasksComponent implements OnInit {
   // userId = input.required<string>();
+  message = input.required<string>();
   userName: string = '';
   private usersService = inject(UsersService);
   private desrtoyRef = inject(DestroyRef);
@@ -29,7 +30,7 @@ export class UserTasksComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.activatedRoute);
-
+    console.log('The Input message is: ' + this.message());
     const subscription = this.activatedRoute.paramMap.subscribe({
       next: (paramMap) => {
         const userId = paramMap.get('userId');
