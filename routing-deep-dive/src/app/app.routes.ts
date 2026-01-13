@@ -22,7 +22,7 @@ import { inject } from '@angular/core';
 const checkAuthorization: CanMatchFn = (route: Route, url: UrlSegment[]) => {
   const router = inject(Router);
   const shouldAuthorize = Math.random();
-  if (shouldAuthorize < 0.5) {
+  if (shouldAuthorize < 1) {
     return true;
   } else {
     return new RedirectCommand(router.parseUrl('/unauthorized'));
