@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { resolveUserTasks, TasksComponent } from '../tasks/tasks.component';
 import { NewTaskComponent } from '../tasks/new-task/new-task.component';
+import { resolveTitle } from './user-tasks/user-tasks.component';
 
 export const userRoutes: Routes = [
   {
@@ -15,6 +16,7 @@ export const userRoutes: Routes = [
     resolve: {
       userTasks: resolveUserTasks,
     },
+    title: resolveTitle,
   },
   {
     path: 'tasks/new',

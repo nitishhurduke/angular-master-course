@@ -22,5 +22,6 @@ export const appRoutes: Routes = [
   {
     path: '**',
     component: NotFoundComponent,
+    title: 'Error',
   },
 ];
