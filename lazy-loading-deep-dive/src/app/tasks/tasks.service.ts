@@ -2,7 +2,9 @@ import { Injectable, signal } from '@angular/core';
 
 import { type NewTaskData } from './task/task.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
+// { providedIn: 'root' } // This makes service to be provided in root, makes the service to load eagerly,
+// instead, lazy load this service when relevant routes get activated
 export class TasksService {
   private tasks = signal([
     {
